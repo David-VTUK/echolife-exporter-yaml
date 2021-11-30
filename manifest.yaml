@@ -11,11 +11,11 @@ metadata:
 spec:
   selector:
     matchLabels:
-      workload: echolife-exporter
+      app: echolife-exporter
   template:
     metadata:
       labels:
-        workload: echolife-exporter
+        app: echolife-exporter
     spec:
       containers:
         - imagePullPolicy: Always
@@ -33,14 +33,27 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: exholife-exporter
+  name: echolife-exporter
   namespace: echolife-exporter
 spec:
   selector:
-    workload: echolife-exporter
+    app: echolife-exporter
   ports:
     - name: metrics
       port: 80
       protocol: TCP
-      targetPort: 8080
+      targetPort: metrics
   type: ClusterIP
+---
+apiVersion: monitoring.coreos.com/v1
+kind: ServiceMonitor
+metadata:
+  name: echolife-exporter
+  namespace: echolife-exporter
+spec:
+  selector:
+    matchLabels:
+      app: echolife-exporter
+  endpoints:
+    - port: metrics
+      path: /metrics
