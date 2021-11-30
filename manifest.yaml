@@ -23,7 +23,6 @@ spec:
           image: virtualthoughts/echolife-exporter:0.23
           ports:
             - name: echolife-exporter
-              expose: true
               protocol: TCP
               containerPort: 8080
           env:
