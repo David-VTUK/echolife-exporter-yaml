@@ -20,7 +20,6 @@ spec:
       containers:
         - imagePullPolicy: Always
           name: echolife-exporter
-          _active: true
           image: virtualthoughts/echolife-exporter:0.23
           ports:
             - name: echolife-exporter
