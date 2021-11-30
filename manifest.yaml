@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: echolife-exporter
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: echolife-exporter
+  namespace: echolife-exporter
+spec:
+  selector:
+    matchLabels:
+      workload: echolife-exporter
+  template:
+    metadata:
+      labels:
+        workload: echolife-exporter
+    spec:
+      containers:
+        - imagePullPolicy: Always
+          name: echolife-exporter
+          _active: true
+          image: virtualthoughts/echolife-exporter:0.23
+          ports:
+            - name: echolife-exporter
+              expose: true
+              protocol: TCP
+              containerPort: 8080
+          env:
+            - name: VDSL_IP
+              value: 192.168.1.3
+  replicas: 1
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: exholife-exporter
+  namespace: echolife-exporter
+spec:
+  selector:
+    workload: echolife-exporter
+  ports:
+    - name: metrics
+      port: 80
+      protocol: TCP
+      targetPort: 8080
+  type: ClusterIP
