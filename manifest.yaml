@@ -35,6 +35,8 @@ kind: Service
 metadata:
   name: echolife-exporter
   namespace: echolife-exporter
+  labels:
+    app: echolife-exporter
 spec:
   selector:
     app: echolife-exporter
